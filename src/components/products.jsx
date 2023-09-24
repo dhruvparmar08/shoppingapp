@@ -9,7 +9,7 @@ const response = require("../static/data.json");
 const products = response.data.products ?? [];
 
 const Products = () => {
-    const [items, setItems] = useState(products);
+    const items = products;
     const [cart, setCart] = useState([]);
     const [summary, setSummary] = useState({
         totalprice: 0
