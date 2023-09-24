@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./card";
 import Button from 'react-bootstrap/Button';
-import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
-import { FaShoppingCart } from "react-icons/fa";
-import { BsArrowLeftSquareFill } from "react-icons/bs";
 import CartPage from "./cart";
 import "../scss/product.scss";
 import { toast } from "react-toastify";
