@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { FaPlus, FaMinus } from "react-icons/fa";
+import React from "react";
 import Button from 'react-bootstrap/Button';
 import UpDown from "./updown";
 
@@ -48,7 +47,7 @@ const CartPage = ({cartitems, updatequality, summary}) => {
                                                     </div>
                                                 </div>
 
-                                                {(cartitems.length != i) ? <hr /> : ''}
+                                                {(cartitems.length !== i) ? <hr /> : ''}
                                             </div>
                                         )
                                     })
