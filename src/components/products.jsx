@@ -28,11 +28,13 @@ const Products = () => {
         showcart: false
     })
 
+    const [totalamount, setTotalAmount] = useState(0);
+    const [showtotal, setShowtotal] = useState(false);
+
     const handleClose = () => setShow(false);
 
     useEffect(() => {
-        const sum = cart.map(ele => ele.totalprice).reduce((total, sum) => total + sum, 0).toFixed(2);
-
+        const sum = cart.map(ele => parseFloat(ele.totalprice)).reduce((total, sum) => total + sum, 0).toFixed(2);
         setSummary({totalprice: sum});
 
         setNavdata((predata) => ({...predata, totalcart: cart.length}));
@@ -69,7 +71,7 @@ const Products = () => {
     const updatequality = (id, quality) => {
         if(quality === 0) {
             // warn
-            console.log("quality -----", quality);
+            // console.log("quality -----", quality);
             setUpdateId(id);
             setShow(true);
         } else {
@@ -77,7 +79,7 @@ const Products = () => {
                 cartvalue.forEach(ele => {
                     if(ele.sku === id) {
                         ele.quality = quality;
-                        ele.totalprice = ele.price * ele.quality;
+                        ele.totalprice = (ele.price * ele.quality).toFixed(2);
                     }
                 })
                 return [...cartvalue];
@@ -107,7 +109,7 @@ const Products = () => {
                     setShowcart(false);
                 }, 1000);
             }
-
+            setUpdateId(0);
             handleClose(false);
         } else {
             cart[index]['quality'] = 1;
@@ -124,10 +126,27 @@ const Products = () => {
     }
 
     const checkcart = (carts) => {
-        console.log("catrs---", carts);
         if(carts === 0) {
             setShowwarn(true);
         }
+    }
+
+    const checkout = (totalprice) => {
+        setShowtotal(true);
+        setTotalAmount(totalprice);
+    }
+
+    const closecheckoutmodal = () => {
+        setShowtotal(false);
+        setUpdateId(0);
+        setNavdata({showcart: false, totalcart: 0});
+        setCart([]);
+
+        const newitems = items.map(ele => ({...ele, iscartadded: false}));
+        setItems(newitems);
+
+        setSummary({totalprice: 0});
+        setShowcart(false);
     }
 
     return (
@@ -154,6 +173,18 @@ const Products = () => {
                 <Modal.Body>There are no more items in your shopping cart. Prior to placing your order, kindly choose one product.</Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => setShowwarn(false)}>
+                        Ok
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showtotal} onHide={handleClose}>
+                <Modal.Header >
+                    <Modal.Title>Alert</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Your cart bill is <b>&#x20B9; {totalamount}</b>.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => closecheckoutmodal()}>
                         Ok
                     </Button>
                 </Modal.Footer>
@@ -200,7 +231,7 @@ const Products = () => {
                         }
                     </div>
                 ) : 
-                cart.length > 0 ? <CartPage cartitems={cart} updatequality={updatequality} summary={summary} /> : '' }
+                cart.length > 0 ? <CartPage cartitems={cart} updatequality={updatequality} summary={summary} checkout={checkout} /> : '' }
         </>
     )
 }

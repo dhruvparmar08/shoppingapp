@@ -2,9 +2,13 @@ import React from "react";
 import Button from 'react-bootstrap/Button';
 import UpDown from "./updown";
 
-const CartPage = ({cartitems, updatequality, summary}) => {
+const CartPage = ({cartitems, updatequality, summary, checkout}) => {
     const updatequalities = (id, quality) => {
         updatequality(id, quality);
+    }
+
+    const totalamount = (amount) => {
+        checkout(amount)
     }
 
     return (
@@ -83,7 +87,7 @@ const CartPage = ({cartitems, updatequality, summary}) => {
                                     </li>
                                 </ul>
 
-                                <Button variant="primary">Go to checkout</Button>
+                                <Button variant="primary" onClick={() => totalamount(summary.totalprice)}>Go to checkout</Button>
                             </div>
                         </div>
                     </div>
