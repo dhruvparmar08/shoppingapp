@@ -8,6 +8,7 @@ import { BsArrowLeftSquareFill } from "react-icons/bs";
 import CartPage from "./cart";
 import "../scss/product.scss";
 import { toast } from "react-toastify";
+import NavbarPage from "./navbar";
 
 const response = require("../static/data.json");
 const products = response.data.products.map(ele => ({...ele, iscartadded: false}));
@@ -20,7 +21,12 @@ const Products = () => {
         totalprice: 0
     })
     const [show, setShow] = useState(false);
+    const [showwarn, setShowwarn] = useState(false);
     const [updateId, setUpdateId] = useState(0);
+    const [navdata, setNavdata] = useState({
+        totalcart: 0,
+        showcart: false
+    })
 
     const handleClose = () => setShow(false);
 
@@ -28,6 +34,8 @@ const Products = () => {
         const sum = cart.map(ele => ele.totalprice).reduce((total, sum) => total + sum, 0).toFixed(2);
 
         setSummary({totalprice: sum});
+
+        setNavdata((predata) => ({...predata, totalcart: cart.length}));
     }, [cart])
 
     const Addcart = (data) => {
@@ -55,7 +63,7 @@ const Products = () => {
             }
         })
 
-        toast.success(`Product ${data.title} added in cart`, { autoClose: true, closeButton: false, delay: 500 });
+        toast(`Product ${data.title} added in cart`, { autoClose: true, closeButton: true, delay: 500, position:'bottom-right' });
     }
 
     const updatequality = (id, quality) => {
@@ -90,12 +98,35 @@ const Products = () => {
                     return [...items];
                 }
             })
+
+            if(cart.length === 0) {
+                setShowwarn(true);
+                setNavdata({showcart: false, totalcart: 0});
+
+                setTimeout(() => {
+                    setShowcart(false);
+                }, 1000);
+            }
+
             handleClose(false);
         } else {
             cart[index]['quality'] = 1;
             cart[index]['totalprice'] = cart[index].price;
             setCart(() => [...cart]);
             handleClose(false);
+        }
+    }
+
+    const handlechanbebtn = (flag) => {
+        setShowcart(flag);
+
+        setNavdata((prevalue) => ({...prevalue, showcart: flag}))
+    }
+
+    const checkcart = (carts) => {
+        console.log("catrs---", carts);
+        if(carts === 0) {
+            setShowwarn(true);
         }
     }
 
@@ -116,7 +147,22 @@ const Products = () => {
                 </Modal.Footer>
             </Modal>
 
-            <div className="m-lg-3">
+            <Modal show={showwarn} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Alert</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>There are no more items in your shopping cart. Prior to placing your order, kindly choose one product.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => setShowwarn(false)}>
+                        Ok
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <div>
+                <NavbarPage navdata={navdata} handlechanbebtn={handlechanbebtn} checkcart={checkcart} />
+            </div>
+            {/* <div className="m-lg-3">
                 { showcart === false ? 
                     (
                         <>
@@ -133,9 +179,9 @@ const Products = () => {
                         </Button>
                     )
                 }
-            </div>
+            </div> */}
 
-            <hr />
+            {/* <hr /> */}
 
             {showcart === false ? 
                 (

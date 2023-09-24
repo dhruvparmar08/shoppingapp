@@ -3,7 +3,6 @@ import Card from 'react-bootstrap/Card';
 import { BsFillBagCheckFill } from 'react-icons/bs';
 
 const ProductCard = ({product, Addcart}) => {
-    console.log("product ----", product);
     return (
         <>
             <Card className='custom_card'>
