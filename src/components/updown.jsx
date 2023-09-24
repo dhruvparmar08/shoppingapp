@@ -8,12 +8,12 @@ const UpDown = ({qualities, updatequalities, id}) => {
     const updatequality = (status) => {
         console.log("status", status);
         if(status === "minus") {
-            if(quality !== 1) {
+            if(quality > 1) {
                 setQuality(quality - 1);
                 updatequalities(id, quality - 1);
             } else {
                 // remove
-                setQuality(0);
+                // setQuality(0);
                 updatequalities(id, 0);
             }
         } else {

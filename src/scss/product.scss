@@ -1,0 +1,25 @@
+button {
+    svg {
+        margin-top: -5px;
+    }
+}
+
+.cbadge {
+    top: -15px;
+    position: relative;
+    right: 10px;
+}
+
+.custom_card {
+    width: 18rem;
+    box-shadow: 0px 0px 8px 0px black;
+    margin: 0 auto;
+
+    img {
+        height: 300px;
+
+        &:hover {
+            box-shadow: 0px 0px 8px 0px black;
+        }
+    }
+}
