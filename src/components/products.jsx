@@ -37,7 +37,7 @@ const Products = () => {
     }, [cart])
 
     const updatequality = (id, quality) => {
-        if(quality == 0) {
+        if(quality === 0) {
             // warn
         } else {
             setCart((cartvalue) => {
